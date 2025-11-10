@@ -1,0 +1,30 @@
+services:
+  workout-pass:
+    depends_on:
+      - workout-pass-pg-db
+    build: .
+    ports:
+      - "3333:3333"
+      - "5555:5555"
+    volumes:
+      - .:/usr/app
+    networks:
+      - workout-pass-network
+  workout-pass-pg-db:
+    image: bitnami/postgresql:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRESQL_USERNAME=docker
+      - POSTGRESQL_PASSWORD=docker
+      - POSTGRESQL_DATABASE=workout_pass
+    volumes:
+      - workout_pass_pg_db:/var/lib/postgresql/data
+    networks:
+      - workout-pass-network
+networks:
+  workout-pass-network:
+    driver: bridge
+volumes:
+  workout_pass_pg_db:
+    driver: local
