@@ -7,11 +7,11 @@ const envSchema = z.object({
     DATABASE_URL: z.string(),
 })
 
-const _env = envSchema.safeParse(process.env)
+const env = envSchema.safeParse(process.env)
 
-if(!_env.success) {
-    console.log("Invalid environment variables", z.treeifyError(_env.error))
+if(!env.success) {
+    console.log("Invalid environment variables", z.treeifyError(env.error))
     throw new Error('Invalid environment variables')
 }
 
-export const env = _env.data
+export const config = env.data

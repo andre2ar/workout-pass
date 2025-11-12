@@ -1,12 +1,12 @@
 import {app} from "@/app.js";
-import {env} from "@/env/index.js";
+import {config} from "@/config/index.js";
 
 const start = async () => {
     try {
-        console.log(`HTTP server starting on port ${env.PORT}`)
+        console.log(`HTTP server starting on port ${config.PORT}`)
         await app.listen({
             host: '0.0.0.0',
-            port: env.PORT
+            port: config.PORT
         })
     } catch (err) {
         app.log.error(err)
