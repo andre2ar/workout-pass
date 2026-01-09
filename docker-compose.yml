@@ -3,11 +3,13 @@ services:
     depends_on:
       - workout-pass-pg-db
     build: .
+    command: npm run dev
     ports:
       - "3333:3333"
       - "5555:5555"
     volumes:
       - .:/usr/app
+      - /usr/app/node_modules
     networks:
       - workout-pass-network
   workout-pass-pg-db:

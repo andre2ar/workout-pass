@@ -15,7 +15,7 @@ interface CreateUserUseCaseResponse {
 
 export class CreateUserUseCase {
     constructor(private usersRepository: IUsersRepository) {}
-
+    
     async execute({
         name,
         email,
