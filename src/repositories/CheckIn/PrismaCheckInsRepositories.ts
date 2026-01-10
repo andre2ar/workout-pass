@@ -9,4 +9,8 @@ export class PrismaCheckInsRepositories implements ICheckInsRepository {
             data
         });
     }
+
+    findByUseIdOnDate(user_id: string, date: Date): Promise<CheckIn | null> {
+        return Promise.resolve(null);
+    }
 }
