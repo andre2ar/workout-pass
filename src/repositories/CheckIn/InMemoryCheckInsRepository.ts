@@ -33,4 +33,12 @@ export class InMemoryCheckInsRepository implements ICheckInsRepository {
 
         return checkIn ?? null;
     }
+
+    async findManyByUserId(userId: string, page: number): Promise<CheckIn[]> {
+        const limit = 20;
+        const skip = (page - 1) * limit;
+
+        return this.checkIns.filter((checkIn) => checkIn.user_id === userId)
+            .slice(skip, skip + limit);
+    }
 }
