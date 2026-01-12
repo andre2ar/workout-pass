@@ -27,4 +27,13 @@ export class InMemoryGymsRepository implements IGymsRepository {
 
         return gym;
     }
+
+    async searchMany(query: string, page: number): Promise<Gym[]> {
+        const limit = 20;
+        const startIndex = (page - 1) * limit;
+        const endIndex = startIndex + limit;
+
+        return this.gyms.filter(gym => gym.name.toLowerCase().includes(query.toLowerCase()))
+            .slice(startIndex, endIndex);
+    }
 }
