@@ -1,8 +1,8 @@
 import {FindManyNearbyParams, IGymsRepository} from "@/repositories/Gym/IGymsRepository";
 import {Gym} from "../../../generated/prisma/client";
 import {GymCreateInput} from "generated/prisma/models";
-import {Decimal} from "@prisma/client/runtime/library";
 import {getDistanceBetweenCoordinates} from "@/utils/GetDistanceBetweenTwoCoordinates";
+import {Decimal} from "../../../generated/prisma/internal/prismaNamespace";
 
 export class InMemoryGymsRepository implements IGymsRepository {
     public gyms: Gym[] = [];

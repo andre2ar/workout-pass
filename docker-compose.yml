@@ -7,6 +7,7 @@ services:
     ports:
       - "3333:3333"
       - "5555:5555"
+      - "51204:51204"
     volumes:
       - .:/usr/app
       - /usr/app/node_modules
