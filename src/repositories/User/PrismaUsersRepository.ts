@@ -3,7 +3,7 @@ import {Prisma, User} from "../../../generated/prisma/client";
 import {IUsersRepository} from "@/repositories/User/IUsersRepository";
 
 export class PrismaUsersRepository implements IUsersRepository {
-    findById(id: string): Promise<User | null> {
+    async findById(id: string): Promise<User | null> {
         return prisma.user.findUnique({
             where: {id}
         })
