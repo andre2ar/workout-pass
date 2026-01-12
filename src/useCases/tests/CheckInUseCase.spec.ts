@@ -2,25 +2,26 @@ import {expect, describe, it, beforeEach, vi, afterEach} from "vitest";
 import { CheckInUseCase } from "@/useCases/CheckInUseCase";
 import { InMemoryCheckInsRepository } from "@/repositories/CheckIn/InMemoryCheckInsRepository";
 import {InMemoryGymsRepository} from "@/repositories/Gym/InMemoryGymsRepository";
-import {Decimal} from "@prisma/client/runtime/library";
+import {MaxNumberOfCheckInsError} from "@/useCases/errors/MaxNumberOfCheckInsError";
+import {MaxDistanceError} from "@/useCases/errors/MaxDistanceError";
 
 let checkInsRepository: InMemoryCheckInsRepository;
 let gymsRepository: InMemoryGymsRepository;
 let sut: CheckInUseCase;
 
 describe("CheckInUseCase", () => {
-    beforeEach(() => {
+    beforeEach(async () => {
         checkInsRepository = new InMemoryCheckInsRepository();
         gymsRepository = new InMemoryGymsRepository();
         sut = new CheckInUseCase(checkInsRepository, gymsRepository);
 
-        gymsRepository.gyms.push({
+        await gymsRepository.create({
             id: 'gym-01',
             name: 'Gym 01',
             description: null,
             phone: null,
-            latitude: new Decimal(0),
-            longitude: new Decimal(0),
+            latitude: 0,
+            longitude: 0,
             created_at: new Date(),
         })
 
@@ -57,7 +58,7 @@ describe("CheckInUseCase", () => {
             userId: 'user-01',
             userLatitude: 0,
             userLongitude: 0,
-        })).rejects.toBeInstanceOf(Error);
+        })).rejects.toBeInstanceOf(MaxNumberOfCheckInsError);
     });
 
     it('should be able to check in twice in different days', async () => {
@@ -83,13 +84,13 @@ describe("CheckInUseCase", () => {
     });
 
     it('should not be able to check in on a distant gym', async () => {
-        gymsRepository.gyms.push({
+        await gymsRepository.create({
             id: 'gym-02',
             name: 'Gym 01',
             description: null,
             phone: null,
-            latitude: new Decimal(28.4716879),
-            longitude: new Decimal(-81.472772),
+            latitude: 28.4716879,
+            longitude: -81.472772,
             created_at: new Date(),
         })
 
@@ -98,6 +99,6 @@ describe("CheckInUseCase", () => {
             userId: 'user-01',
             userLatitude: 28.412366,
             userLongitude: -81.3402765,
-        })).rejects.toBeInstanceOf(Error);
+        })).rejects.toBeInstanceOf(MaxDistanceError);
     });
 });
