@@ -20,6 +20,22 @@ export class InMemoryCheckInsRepository implements ICheckInsRepository {
         return checkIn;
     }
 
+    async save(checkIn: CheckIn): Promise<CheckIn> {
+        const checkInIndex = this.checkIns.findIndex((item) => item.id === checkIn.id);
+
+        if (checkInIndex >= 0) {
+            this.checkIns[checkInIndex] = checkIn;
+        }
+
+        return checkIn;
+    }
+
+    async findById(id: string): Promise<CheckIn | null> {
+        const checkIn = this.checkIns.find((checkIn) => checkIn.id === id);
+
+        return checkIn ?? null;
+    }
+
     async findByUseIdOnDate(user_id: string, date: Date): Promise<CheckIn | null> {
         const startOfTheDay = dayjs(date).startOf('date');
         const endOfTheDay = dayjs(date).endOf('date');
