@@ -24,9 +24,9 @@ jobs:
       - run: npm ci
       - run: npx prisma generate
         env:
-          DATABASE_URL: "postgresql://docker:docker@workout-pass-pg-db:5432/workout_pass?schema=public"
+          DATABASE_URL: "postgresql://docker:docker@localhost:5432/workout_pass?schema=public"
       - run: npm run test:e2e
         env:
-          DATABASE_URL: "postgresql://docker:docker@workout-pass-pg-db:5432/workout_pass?schema=public"
+          DATABASE_URL: "postgresql://docker:docker@localhost:5432/workout_pass?schema=public"
           JWT_SECRET: "dummy"
           NODE_ENV: "test"
