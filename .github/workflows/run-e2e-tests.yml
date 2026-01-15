@@ -1,0 +1,32 @@
+name: Run E2E Tests
+on: [push]
+
+jobs:
+  run-e2e-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    services:
+      workout-pass-pg-db:
+        image: bitnami/postgresql:latest
+        ports:
+          - "5432:5432"
+        env:
+          POSTGRESQL_USERNAME: docker
+          POSTGRESQL_PASSWORD: docker
+          POSTGRESQL_DATABASE: workout_pass
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '24'
+          cache: 'npm'
+      - run: npm ci
+      - run: npx prisma generate
+        env:
+          DATABASE_URL: "postgresql://docker:docker@workout-pass-pg-db:5432/workout_pass?schema=public"
+      - run: npm run test:e2e
+        env:
+          DATABASE_URL: "postgresql://docker:docker@workout-pass-pg-db:5432/workout_pass?schema=public"
+          JWT_SECRET: "dummy"
+          NODE_ENV: "test"
