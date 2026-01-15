@@ -26,9 +26,26 @@ export async function AuthenticateController(request: FastifyRequest, reply: Fas
             }
         );
 
-        return reply.status(200).send({
-            token,
-        })
+        const refreshToken = await reply.jwtSign(
+            {},
+            {
+                sign: {
+                    sub: user.id,
+                    expiresIn: '7d'
+                }
+            }
+        );
+
+        return reply
+            .setCookie('refreshToken', refreshToken, {
+                path: '/',
+                secure: true,
+                httpOnly: true,
+                sameSite: true,
+            })
+            .status(200).send({
+                token,
+            })
     } catch (e) {
         if(e instanceof InvalidCredentialsError) {
             return reply.status(401).send({
