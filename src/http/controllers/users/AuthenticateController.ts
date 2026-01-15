@@ -18,7 +18,9 @@ export async function AuthenticateController(request: FastifyRequest, reply: Fas
         });
 
         const token = await reply.jwtSign(
-            {},
+            {
+                role: user.role
+            },
             {
                 sign: {
                     sub: user.id,
@@ -27,7 +29,9 @@ export async function AuthenticateController(request: FastifyRequest, reply: Fas
         );
 
         const refreshToken = await reply.jwtSign(
-            {},
+            {
+                role: user.role
+            },
             {
                 sign: {
                     sub: user.id,
