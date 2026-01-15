@@ -1,5 +1,7 @@
 # Workout Pass
 
+Built using Typescript, NodeJs, Prisma and Fastify.
+
 # Console commands
 
 ## NPM
